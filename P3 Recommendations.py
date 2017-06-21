@@ -100,7 +100,10 @@ count = 0
 for movie in movieRatingTemp:
     avg = np.mean(movieRatingTemp[movie])
     movieRating[movie] = avg
-    count += 1
+    count = len(movieRatingTemp[movie])
+    movieRatingCount[movie] = count
+
+
 
 # Using numpy place the average rating for each movie in movieRating and the total number of ratings in movieRatingCount
 # Note: You will need a for loop to get each dictionary key b
@@ -109,9 +112,19 @@ for movie in movieRatingTemp:
 # Get sorting ratings
 # https://www.saltycrane.com/blog/2007/09/how-to-sort-python-dictionary-by-keys/
 movieRatingS = sorted(movieRating.iteritems(), key=lambda (k,v): (v,k), reverse=True)
-
+print(movieRatingS)
 # Top 10 Movies
 print("Top Ten Movies:")
+for i in range(0,11):
+    rating = movieRatingS[i][1]
+    movie = movieRatingS[i][0]
+    movie = movieDict[movie]
+    idnum = movieRatingS[i][0]
+    counter = movieRatingCount[i][0]
+    print(movie)
+    print(rating)
+    print(idnum)
+    print(counter)
 # Print the top 10 movies
 # It should print the number, title, id, rating and count of reviews for each movie
 # ie 2. Someone Else's America (1995) (ID: 1599) Rating: 5.0 Count: 1
