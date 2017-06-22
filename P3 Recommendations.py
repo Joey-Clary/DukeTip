@@ -95,14 +95,12 @@ for movie in movieData:
 # Create an empty dictionary for movieRating and movieRatingCount
 movieRating = {}
 movieRatingCount = {}
-count = 0
 
 for movie in movieRatingTemp:
     avg = np.mean(movieRatingTemp[movie])
     movieRating[movie] = avg
-    count = len(movieRatingTemp[movie])
-    movieRatingCount[movie] = count
-
+    movieRatingCount[movie] = len(movieRatingTemp[movie])
+print(movieRatingCount)
 
 
 # Using numpy place the average rating for each movie in movieRating and the total number of ratings in movieRatingCount
@@ -115,23 +113,35 @@ movieRatingS = sorted(movieRating.iteritems(), key=lambda (k,v): (v,k), reverse=
 print(movieRatingS)
 # Top 10 Movies
 print("Top Ten Movies:")
-for i in range(0,11):
+for i in range(0,10):
     rating = movieRatingS[i][1]
     movie = movieRatingS[i][0]
     movie = movieDict[movie]
     idnum = movieRatingS[i][0]
-    counter = movieRatingCount[i][0]
-    print(movie)
-    print(rating)
-    print(idnum)
-    print(counter)
+    count = movieRatingCount[movieRatingS[i][0]]
+    print(str(i + 1) + '. ' + str(movie) + ' ' + str(idnum) + ' ' + str(rating) + ' ' + str(count))
+    #print(counter)
 # Print the top 10 movies
 # It should print the number, title, id, rating and count of reviews for each movie
 # ie 2. Someone Else's America (1995) (ID: 1599) Rating: 5.0 Count: 1
 
 
-# Top 10 Movies with at least 100 ratings    
+# Top 10 Movies with at least 100 ratings
+
 print("\n\nTop Ten movies with at least 100 ratings:")
+num = 0
+i = 0
+while num < 10:
+    rating = movieRatingS[i][1]
+    movie = movieRatingS[i][0]
+    movie = movieDict[movie]
+    idnum = movieRatingS[i][0]
+    count = movieRatingCount[movieRatingS[i][0]]
+    key = movieRatingS[i][0]
+    if movieRatingCount[key] >= 100:
+        print(str(i + 1) + '. ' + str(movie) + ' ' + str(idnum) + ' ' + str(rating) + ' ' + str(count))
+        num += 1
+    i += 1
 # It should print the same thing, but this time all the movies should have over 100 ratings
 # The number should be the movie's absolute rank
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
