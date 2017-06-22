@@ -65,7 +65,7 @@ movieNames = np.loadtxt('./ml-100k/u.item', delimiter= '|', usecols=(0, 1), dtyp
 
 # Create a dictionary with the ids as keys and the names as the values
 movieDict = dict(zip(movieNames['id'], movieNames['name']))
-print(movieDict)
+#print(movieDict)
 # Load the movie Data (u.data) with just columns 0, 1, and 2 (user, movie, rating) all are np.int
 movieData = np.loadtxt('./ml-100k/u.data', usecols=(0, 1, 2), dtype={'names': ('user', 'movie', 'rating'), 'formats': (np.int, np.int, np.int)})
 #print(movieData)
@@ -100,7 +100,7 @@ for movie in movieRatingTemp:
     avg = np.mean(movieRatingTemp[movie])
     movieRating[movie] = avg
     movieRatingCount[movie] = len(movieRatingTemp[movie])
-print(movieRatingCount)
+#print(movieRatingCount)
 
 
 # Using numpy place the average rating for each movie in movieRating and the total number of ratings in movieRatingCount
@@ -110,7 +110,7 @@ print(movieRatingCount)
 # Get sorting ratings
 # https://www.saltycrane.com/blog/2007/09/how-to-sort-python-dictionary-by-keys/
 movieRatingS = sorted(movieRating.iteritems(), key=lambda (k,v): (v,k), reverse=True)
-print(movieRatingS)
+#print(movieRatingS)
 # Top 10 Movies
 print("Top Ten Movies:")
 for i in range(0,10):
@@ -147,7 +147,7 @@ while num < 10:
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
 # Number 16 is first in this list because it's the first movie with over 100 ratings
 
-exit(0) # Remove this line after we finish phase 2
+#exit(0) # Remove this line after we finish phase 2
 
 ########################################################
 # Begin Phase 3
@@ -192,6 +192,36 @@ processLikes(iLike)
 # User Similiarity: 0.170731707317
 iLike = [ 79,  96,  98, 168, 173, 176,194, 318, 357, 427, 603, 1]
 processLikes(iLike)
+userlikelist = []
+
+
+while True:
+    recommendation = raw_input("Would you like to get a recommendation for a movie? Type y or n:")
+    if recommendation == 'y':
+        while True:
+            userlike = raw_input("Enter the movie IDs for the movies you have liked: (Type d if done)")
+            if userlike == 'd':
+                break
+            else:
+                try:
+                    #int(userlike)
+                    if userlike > 1683:
+                        print("Please only type the movie's ID")
+                        continue
+                    else:
+                        userlikelist.append(userlike)
+                        print(userlikelist)
+                except ValueError:
+                    print("Please only type the movie's ID")
+                    continue
+    elif recommendation != 'n':
+        print("Invalid")
+        continue
+    else:
+        break
+
+
+
 
 # If your code completes the above recommendations properly, you're ready for the last part,
 # allow the user to select any number of movies that they like and then give them recommendations.
@@ -199,4 +229,3 @@ processLikes(iLike)
 # You can just assume they have a list of movies somewhere so they already know what numbers to type in.
 # If you'd like to give them options though, that would be a cool bonus project if you finish early.
 
-        
