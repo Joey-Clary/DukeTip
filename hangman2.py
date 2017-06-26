@@ -77,13 +77,13 @@ def dying(wrong):
         print("|              ")
     else:
         print("error")
-
-list_words = ["gladiolus", "cerise", "abrogate", "knack", "luxuriance", "fracas", "foulard", "invulnerable", "torsion" \
-,"brethren", "intelligible", "eczema", "promiscuous", "sanitarium", "canonical", "therapy", "initials", "sacrilegious",\
-"semaphore", "chlorophyll", "psychiatry", "dulcimer", "meticulosity", "insouciant", "abcdefghijklmnopqrstuvwxyz"]
+easy_list = []
+hard_list = ["gladiolus", "cerise", "abrogate", "knack", "luxuriance", "fracas", "foulard", "invulnerable", "torsion",
+              "brethren", "intelligible", "eczema", "promiscuous", "sanitarium", "canonical", "therapy", "initials",
+              "sacrilegious", "semaphore", "chlorophyll", "psychiatry", "dulcimer", "meticulosity", "insouciant"]
 correct_letters = []
 
-word = numpy.random.choice(list_words)
+word = numpy.random.choice(hard_list)
 length = len(word)
 output = " "
 lengthofword = "_ " * length
@@ -96,7 +96,7 @@ while yay == 0:
     letter = raw_input("What letter would you like to guess?")
 
     for i in word:
-        if letter == i and i not in correct_letters:
+        if letter == i:
             correct_letters.append(letter)
         if i in correct_letters:
             output = output + i
@@ -105,8 +105,8 @@ while yay == 0:
     if letter not in correct_letters:
         wrong += 1
     if len(correct_letters) == length:
-        yay = 1
-        print(yay)
+            yay = 1
+            print(yay)
     if yay == 1:
         print("Congratulations!!")
         print("You have won absolutely nothing!")
