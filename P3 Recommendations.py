@@ -9,50 +9,63 @@ def findSimilar(iLike, userLikes):
     similarityAnd = userLikes * iLike
     # Create a per user sum
     similarityAndSum = similarityAnd.sum(axis=1)
-    userSimilarityOr = iLike.sum(axis=1)
+    userSimilarityOr = (iLike + userLikes) - similarityAnd
     # Calculate the similarity
-    userSimilarity = 0 # replace 0 with the correct code to calculate the Jaccard Index for each user
-    
+    userSimilarity = similarityAndSum / userSimilarityOr.sum(axis=1)
+    #print(userSimilarity)
     # Make the most similar user has a new like that the previous user did not have
     # I used a while loop.
     # You can "get rid" of a user that is most similar, but doesn't have any new likes
     # by setting the userSimilarity for them to 0
+    running = 1
+
+    while True:
+        maxIndex = userSimilarity.argmax()
+        newlikes = userLikes[maxIndex] - iLike
+        if newlikes[newlikes > 0].sum() > 0:
+            break
+        else:
+            userSimilarity[maxIndex] = 0
     # When you get the index, save it in the variable maxIndex
-    
+
     # Print the max similarity number (most times this is something like 0.17
-    
+    print("User Similarity: " + str(userSimilarity[maxIndex]))
     # Return the index of the user which is the best match
     return maxIndex
     
-def printMovie(id):
+def printMovie(num):
     # Print the id of the movie and the name.  This should look something like
     # "    - 430: Duck Soup (1933)" if the id is 430 and the name is Duck Soup (1933)
-    print(movieNames[0] + ' ' + movieNames[1])
+    print(movieDict[num])
 
 def processLikes(iLike):
     print("\n\nSince you like:")
-    
+    for i in iLike:
+        printMovie(i)
     # Print the name of each movie the user reported liking
     # Hint: Use a for loop and the printMovie function.
-    iLikeNp = np.zeros(len(iLike))
+    iLikeNp = np.zeros(maxMovie)
     for i in iLike:
-
+        iLikeNp[i] = 1
     # Convert iLike into an array of 0's and 1's which matches the array for other users
     # It should have one column for each movie (just like the userLikes array)
     # Start with all zeros, then fill in a 1 for each movie the user likes
-    iLikeNp = 0 # replace 0 with the code to make the array of zeros
+    #iLikeNp = 0 # replace 0 with the code to make the array of zeros
     # You'll need a few more lines of code to fill in the 1's as needed
 
     # Find the most similar user
-    user = 0 # replace 0 with the correct code (hint: use one of your functions)
+    user = findSimilar(iLikeNp, userLikes)
     print("\nYou might like: ")
     # Find the indexes of the values that are ones
     # https://stackoverflow.com/a/17568803/3854385 (Note: You don't want it to be a list, but you do want to flatten it.)
-    recLikes = 0 # replace 0 with the needed code
+    recLikes = np.argwhere(userLikes[user, :] == 1)
+    recLikes = recLikes.flatten()
 
     # For each item the similar user likes that the person didn't already say they liked
     # print the movie name using printMovie (you'll also need a for loop and an if statement)
-
+    for i in recLikes:
+        if iLikeNp[i] == 0:
+            printMovie(i)
 ########################################################
 # Begin Phase 1
 ########################################################
@@ -178,7 +191,7 @@ print(userLikes)
 # functions up there
 ########################################################
 
-# First sample user
+""""# First sample user
 # User Similiarity: 0.133333333333
 iLike = [655, 315, 66, 96, 194, 172]
 processLikes(iLike)
@@ -194,7 +207,7 @@ processLikes(iLike)
 # User Similiarity: 0.170731707317
 iLike = [ 79,  96,  98, 168, 173, 176,194, 318, 357, 427, 603, 1]
 processLikes(iLike)
-
+"""
 iLike = []
 while True:
     recommendation = raw_input("Would you like to get a recommendation for a movie? Type y or n:")
@@ -202,15 +215,17 @@ while True:
         while True:
             userlike = raw_input("Enter the movie IDs for the movies you have liked: (Type d if done)")
             if userlike == 'd':
+                processLikes(iLike)
                 break
             else:
                 try:
-                    int(userlike)
+                    userlike = int(userlike)
                     iLike.append(userlike)
                     print(iLike)
                 except ValueError:
                     print("Please only type the movie's ID")
                     continue
+        break
     elif recommendation != 'n':
         print("Invalid")
         continue
